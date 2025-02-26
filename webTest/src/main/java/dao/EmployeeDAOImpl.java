@@ -30,9 +30,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		this.context = context ;
 	}
 
-	public EmployeeDAOImpl() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	public ServletContext getContext() {
 		return context;

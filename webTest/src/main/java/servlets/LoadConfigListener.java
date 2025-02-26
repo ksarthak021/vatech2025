@@ -40,12 +40,17 @@ public class LoadConfigListener implements ServletContextListener {
 					
 					e.printStackTrace();
 				}
+				
+				 EmployeeDAOImpl dao = new EmployeeDAOImpl(context);
+		         context.setAttribute("employeeDAO", dao);
+		         System.out.println("EmployeeDAO initialized and stored in ServletContext!");
+
 		}  catch(IOException e) {
 			e.printStackTrace();
 		}
 	
-		EmployeeDAOImpl dao = new EmployeeDAOImpl(context);
-		context.setAttribute("emp", dao);
+//		EmployeeDAOImpl dao = new EmployeeDAOImpl(context);
+//		context.setAttribute("emp", dao);
 		
 	}
 }
