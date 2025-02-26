@@ -46,18 +46,25 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public void save(Employee e) {
-		try(Connection conn = getConnection()) {
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO EMPLOYEE (NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,ID) VALUES (?,?,?,?,?,?,?)");
-			setValuesToPreparedStatement(e, ps);
-			int rowsAffected = ps.executeUpdate();
-			System.out.println("Rows Updated = "+ rowsAffected);
-			
-		} catch(Exception ex) {
-			throw new RuntimeException(ex);
+		    try (Connection conn = getConnection()) {
+		        PreparedStatement ps = conn.prepareStatement(
+		            "INSERT INTO employee (id, name, age, gender, salary, experience, level, deptid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+		        );
+		        ps.setInt(1, (int)e.getId());
+		        ps.setString(2, e.getName());
+		        ps.setInt(3, e.getAge());
+		        ps.setString(4, e.getGender().name());
+		        ps.setFloat(5, e.getSalary());
+		        ps.setInt(6, e.getExperience());
+		        ps.setInt(7, e.getLevel());
+		        
+
+		        int rowsAffected = ps.executeUpdate();
+		       
+		    } catch (SQLException ex) {
+		        throw new RuntimeException("Error saving employee: " + ex.getMessage(), ex);
+		    }
 		}
-
-	}
-
 	private void setValuesToPreparedStatement(Employee e, PreparedStatement ps) throws SQLException {
 		ps.setString(1, e.getName());
 		ps.setInt(2, e.getAge());
@@ -119,21 +126,29 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return Employee.builder().id(rs.getInt(1)).name(rs.getString(2)).age(rs.getInt(3)).gender(Gender.valueOf(rs.getString(4)))
 				.salary(rs.getFloat(5)).experience(rs.getInt(6)).level(rs.getInt(7)).build();
 	}
+	
+
+
 
 	@Override
 	public List<Employee> getAll() {
-		List<Employee> emps = new ArrayList<Employee>();
-		try (Connection conn = getConnection()){
-			PreparedStatement ps = conn.prepareStatement("SELECT ID,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL FROM EMPLOYEE");
-			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-				emps.add(populateEmployee(rs));
-			}
-			}catch (Exception ex) {
-				throw new RuntimeException(ex);		
-			}
-		
-		return emps;
+		 List<Employee> emps = new ArrayList<>();
+		    try (Connection conn = getConnection()) {
+		        System.out.println("Fetching All Employees");
+
+		        PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee");
+		        ResultSet rs = ps.executeQuery();
+
+		        while (rs.next()) {
+		            emps.add(populateEmployee(rs));  
+		        }
+
+		        System.out.println("Total Employees Found: " + emps.size());
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return emps;
 	}
 	
 	
@@ -264,6 +279,31 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			throw new RuntimeException(ex);
 		}
 		return emps;
+		
+		
 	}
+	
+	@Override
+	public List<Employee> getEmployeesByDeptId(int deptId) {
+		 List<Employee> emps = new ArrayList<>();
+		    try (Connection conn = getConnection()) {
+		        System.out.println("Fetching Employees for Department ID: " + deptId);
+
+		        PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee WHERE deptid = ?");
+		        ps.setInt(1, deptId);
+		        ResultSet rs = ps.executeQuery();
+
+		        while (rs.next()) {
+		            emps.add(populateEmployee(rs));  
+		        }
+
+		        System.out.println(" Total Employees Found: " + emps.size());
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return emps;
+	}
+
 
 }

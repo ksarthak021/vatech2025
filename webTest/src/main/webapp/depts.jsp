@@ -41,31 +41,29 @@
 </form>
 <hr></hr>
 
-<h2>Employees in Department</h2>
-<table>
-	<tr>
-	<th><a href="depts?operation=sort&column=ID">ID</a></th>
-	<th><a href="depts?operation=sort&column=NAME">Name</a></th>
-	<th><a href="depts?operation=sort&column=AGE">Age</a></th>
-	<th><a href="depts?operation=sort&column=GENDER">Gender</a></th>
-	<th><a href="depts?operation=sort&column=SALARY">Salary</a></th>
-	<th><a href="depts?operation=sort&column=EXPERIENCE">Experience</a></th>
-	<th><a href="depts?operation=sort&column=LEVEL">Level</a></th>
-	
-	</tr>
-	<c:forEach items="${emps}" var="e">            <%-- second type of writing style , first is below it --%>
-		<tr>                                   
-			<td><c:out value ="${e.id}"></c:out></td>        <%-- c out is used for writing in a good way . can be used and not --%>
-			<td>${e.name}</td>
-			<td>${e.age}</td>
-			<td>${e.gender}</td>
-			<td>${e.salary}</td>
-			<td>${e.experience}</td>
-			<td>${e.level}</td>
-		</tr>
-	</c:forEach>
-	  
-	
+<hr>
+<h2>Employees in ${dept.name} Department</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Salary</th>
+        <th>Experience</th>
+        <th>Level</th>
+    </tr>
+    <c:forEach items="${employees}" var="e">
+        <tr>
+            <td>${e.id}</td>
+            <td>${e.name}</td>
+            <td>${e.age}</td>
+            <td>${e.gender}</td>
+            <td>${e.salary}</td>
+            <td>${e.experience}</td>
+            <td>${e.level}</td>
+        </tr>
+    </c:forEach>
 </table>
 
 <hr></hr>

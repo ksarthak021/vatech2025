@@ -18,5 +18,6 @@ public interface DeptDAO {
 	void delete(int id);
 
 	Set<Dept> getAll();
+	 
 
 }

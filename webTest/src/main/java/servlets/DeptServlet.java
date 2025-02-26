@@ -1,12 +1,12 @@
 package servlets;
-
+ 
 import java.io.IOException;
 import java.util.List;
-
+ 
 import dao.Employee;
 import dao.EmployeeDAO;
 import dao.EmployeeDAOImpl;
-
+ 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+ 
 @WebServlet(urlPatterns = "/depts")
 public class DeptServlet extends HttpServlet {
 	
@@ -27,14 +27,14 @@ public class DeptServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 	    super.init(config);
 	    ServletContext context = config.getServletContext();
-
+ 
 	    deptDAO = new DeptDAOImpl(context);  
 	    dao = (EmployeeDAO) context.getAttribute("employeeDAO");
-
+ 
 	    if (dao == null) {
 	        throw new IllegalStateException("Error: EmployeeDAO was not initialized properly!");
 	    }
-
+ 
 	    context.setAttribute("deptDAO", deptDAO);
 	}
 	
@@ -43,7 +43,7 @@ public class DeptServlet extends HttpServlet {
 		String operation = req.getParameter("operation");
 		HttpSession session = req.getSession();
 		Dept current = (Dept) session.getAttribute("current");
-
+ 
 		if (current == null) {
 			current = deptDAO.first();
 		} else {
@@ -81,11 +81,11 @@ public class DeptServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 	    String operation = req.getParameter("operation");
-
+ 
 	    // Fetch Employees
 	    List<Employee> emps = dao.getAll();
 	    req.setAttribute("emps", emps);
-
+ 
 	    // Fetch First Department - Ensure it exists
 	    Dept currentDept = null;
 	    try {
@@ -93,15 +93,17 @@ public class DeptServlet extends HttpServlet {
 	    } catch (Exception e) {
 	        System.err.println("Error: No departments found!");
 	    }
-
+ 
 	    if (currentDept == null) {
 	        resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No departments found in database.");
 	        return;  
 	    }
-
+ 
 	    req.setAttribute("dept", currentDept);
 	    session.setAttribute("current", currentDept);
-
+ 
 	    req.getRequestDispatcher("depts.jsp").forward(req, resp);
 	}
 }
+ 
+ 

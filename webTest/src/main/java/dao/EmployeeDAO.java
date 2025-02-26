@@ -24,6 +24,8 @@ public interface EmployeeDAO {
 	List<Employee> searchByGender(String gender);
 
 	List<Employee> sortEmployees(String column, String order);
+	List<Employee> getEmployeesByDeptId(int deptId);
+
 	
 	
 	

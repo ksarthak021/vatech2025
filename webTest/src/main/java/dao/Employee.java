@@ -22,18 +22,22 @@ public class Employee implements Comparable<Employee>{
     private Gender gender;
     
     
+    
 	
     public Employee() {}
 
-    public Employee(String name, int age, Gender gender, float salary, int experience, int level,int id ) {
-        this.name = name;
+    public Employee(int id, String name, int age, Gender gender, float salary, int experience, int level) {
         this.id = id;
+        this.name = name;
         this.age = age;
-        this.level = level;
+        this.gender = gender;
         this.salary = salary;
         this.experience = experience;
-        this.gender = gender;
+        this.level = level;
+        
     }
+
+    
 
     // Getters and setters
     public String getName() {
@@ -180,7 +184,7 @@ public class Employee implements Comparable<Employee>{
     }
 
     public static void main(String[] args) {
-        Employee obj = new Employee("Roy", 22,Gender.MALE,30000, 2,5,4);
+        Employee obj = new Employee(1,"Roy", 22, Gender.MALE, 30000, 2, 5);
         System.out.println(obj);
     }
 }
