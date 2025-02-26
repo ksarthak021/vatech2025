@@ -26,6 +26,12 @@ public class LoadConfigListener implements ServletContextListener {
 		
 				properties.load(input);
 				
+				 System.out.println(" DB URL: " + properties.getProperty("jdbc_url"));
+			        System.out.println(" DB User: " + properties.getProperty("jdbc_user"));
+			        System.out.println(" DB Password: " + properties.getProperty("jdbc_password"));
+			        System.out.println(" DB Driver: " + properties.getProperty("jdbc_driver"));
+
+				
 				context.setAttribute("jdbc_url", properties.getProperty("jdbc_url"));
 				context.setAttribute("jdbc_user", properties.getProperty("jdbc_user"));
 				context.setAttribute("jdbc_password", properties.getProperty("jdbc_password"));
@@ -38,7 +44,7 @@ public class LoadConfigListener implements ServletContextListener {
 			
 				} catch (ClassNotFoundException e) {
 					
-					e.printStackTrace();
+					System.err.println(" Error loading JDBC driver: " + e.getMessage());
 				}
 				
 				 EmployeeDAOImpl dao = new EmployeeDAOImpl(context);

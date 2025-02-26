@@ -51,6 +51,14 @@ public class DeptServlet extends HttpServlet {
 				current = deptDAO.first();
 			} else if ("Last".equals(operation)) {
 				current = deptDAO.last();
+			} else if ("Previous".equals(operation)) {
+		            System.out.println(" Previous button clicked! Current ID: " + current.getId());
+		            current = deptDAO.previous(current.getId());
+		            System.out.println(" New Current Department after Previous: " + current.getId());
+		    } else if ("Next".equals(operation)) {
+		            System.out.println(" Next button clicked! Current ID: " + current.getId());
+		            current = deptDAO.next(current.getId());
+		            System.out.println(" New Current Department after Next: " + current.getId());
 			} else {
 				current = deptDAO.next(current.getId());
 			}

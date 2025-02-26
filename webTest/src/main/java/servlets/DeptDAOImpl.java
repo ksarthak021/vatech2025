@@ -1,126 +1,231 @@
 package servlets;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.sql.*;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-
 import jakarta.servlet.ServletContext;
- 
 
 public class DeptDAOImpl implements DeptDAO {
-	
-	 private ServletContext context;
+    
+    private ServletContext context;
 
-	    public DeptDAOImpl(ServletContext context) {
-	        this.context = context;
-	    }
+    public DeptDAOImpl(ServletContext context) {
+        this.context = context;
+    }
 
-	    private Connection getConnection() throws SQLException {
-	        return DriverManager.getConnection(
-	            (String) context.getAttribute("jdbc_url"),
-	            (String) context.getAttribute("jdbc_user"),
-	            (String) context.getAttribute("jdbc_password")
-	        );
-	    }
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(
+            (String) context.getAttribute("jdbc_url"),
+            (String) context.getAttribute("jdbc_user"),
+            (String) context.getAttribute("jdbc_password")
+        );
+    }
 
-	    @Override
-	    public void save(Dept dept) {
-	        try (Connection conn = getConnection()) {
-	            PreparedStatement ps = conn.prepareStatement("INSERT INTO dept (id, name, location) VALUES (?, ?, ?)");
-	            ps.setInt(1, dept.getId());
-	            ps.setString(2, dept.getName());
-	            ps.setString(3, dept.getLocation());
-	            ps.executeUpdate();
-	        } catch (SQLException e) {
-	            throw new RuntimeException("Error saving department: " + e.getMessage(), e);
-	        }
-	    }
+    @Override
+    public Dept first() {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Executing SQL: SELECT * FROM dept ORDER BY deptid ASC LIMIT 1");
 
-	    @Override
-	    public Dept first() {
-	        try (Connection conn = getConnection()) {
-	            System.out.println("Fetching first department...");
-	            
-	            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept ORDER BY id ASC LIMIT 1");
-	            ResultSet rs = ps.executeQuery();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept ORDER BY deptid ASC LIMIT 1");
+            ResultSet rs = ps.executeQuery();
 
-	            if (rs.next()) {
-	                System.out.println("Department Found: " + rs.getString("name"));
-	                return new Dept(rs.getInt("id"), rs.getString("name"), rs.getString("location"));
-	            } else {
-	                System.out.println("No departments found in database!");
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace(); // Print SQL error
-	        }
+            if (rs.next()) {
+                System.out.println("First Department Found: " + rs.getString("deptname"));
+                return new Dept(
+                    rs.getInt("deptid"),
+                    rs.getString("deptname"),
+                    rs.getString("deptlocation")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	        throw new RuntimeException("No departments found in database!");
-	    }
+        throw new RuntimeException("No departments found in database!");
+    }
 
-	    @Override
-	    public Dept last() {
-	        try (Connection conn = getConnection()) {
-	            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept ORDER BY id DESC LIMIT 1");
-	            ResultSet rs = ps.executeQuery();
-	            if (rs.next()) {
-	                return new Dept(rs.getInt("id"), rs.getString("name"), rs.getString("location"));
-	            }
-	        } catch (SQLException e) {
-	            throw new RuntimeException("Error fetching last department: " + e.getMessage(), e);
-	        }
-	        throw new RuntimeException("No departments found in database!");
-	    }
+    @Override
+    public Dept last() {
+        try (Connection conn = getConnection()) {
+            System.out.println("Executing SQL: SELECT * FROM dept ORDER BY deptid DESC LIMIT 1");
 
-	    @Override
-	    public Set<Dept> getAll() {
-	        Set<Dept> depts = new HashSet<>();
-	        try (Connection conn = getConnection()) {
-	            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept");
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()) {
-	                depts.add(new Dept(rs.getInt("id"), rs.getString("name"), rs.getString("location")));
-	            }
-	        } catch (SQLException e) {
-	            throw new RuntimeException("Error fetching departments: " + e.getMessage(), e);
-	        }
-	        return depts;
-	    }
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept ORDER BY deptid DESC LIMIT 1");
+            ResultSet rs = ps.executeQuery();
 
-		@Override
-		public Dept next(int id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+            if (rs.next()) {
+                System.out.println("Last Department Found: " + rs.getString("deptname"));
+                return new Dept(
+                    rs.getInt("deptid"),
+                    rs.getString("deptname"),
+                    rs.getString("deptlocation")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		@Override
-		public Dept previous(int id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        throw new RuntimeException("No departments found in database!");
+    }
 
-		@Override
-		public void update(Dept dept) {
-			// TODO Auto-generated method stub
-			
-		}
+    @Override
+    public Dept next(int id) {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Executing SQL: SELECT * FROM dept WHERE deptid > " + id + " ORDER BY deptid ASC LIMIT 1");
 
-		@Override
-		public Dept getDept(int id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept WHERE deptid > ? ORDER BY deptid ASC LIMIT 1");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
 
-		@Override
-		public void delete(int id) {
-			// TODO Auto-generated method stub
-			
-		}
-	
+            if (rs.next()) {
+                System.out.println("Next Department Found: " + rs.getString("deptname"));
+                return new Dept(
+                    rs.getInt("deptid"),
+                    rs.getString("deptname"),
+                    rs.getString("deptlocation")
+                );
+            } else {
+                System.out.println("No next department found! Returning the last department.");
+                return last();  // If no next department, return the last department
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        throw new RuntimeException("Error fetching next department!");
+    }
+
+    @Override
+    public Dept previous(int id) {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Executing SQL: SELECT * FROM dept WHERE deptid < " + id + " ORDER BY deptid DESC LIMIT 1");
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept WHERE deptid < ? ORDER BY deptid DESC LIMIT 1");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println(" Previous Department Found: " + rs.getString("deptname") + " (ID: " + rs.getInt("deptid") + ")");
+                return new Dept(
+                    rs.getInt("deptid"),
+                    rs.getString("deptname"),
+                    rs.getString("deptlocation")
+                );
+            } else {
+                System.out.println(" No previous department found! Returning the first department.");
+                return first();  // If no previous department, return the first one
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("Error fetching previous department!");
+    }
+
+
+
+    @Override
+    public void save(Dept dept) {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Inserting Department: " + dept.getName());
+
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO dept (deptid, deptname, deptlocation) VALUES (?, ?, ?)");
+            ps.setInt(1, dept.getId());
+            ps.setString(2, dept.getName());
+            ps.setString(3, dept.getLocation());
+            ps.executeUpdate();
+
+            System.out.println(" Department Inserted Successfully!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error saving department: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void update(Dept dept) {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Updating Department: " + dept.getName());
+
+            PreparedStatement ps = conn.prepareStatement("UPDATE dept SET deptname = ?, deptlocation = ? WHERE deptid = ?");
+            ps.setString(1, dept.getName());
+            ps.setString(2, dept.getLocation());
+            ps.setInt(3, dept.getId());
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Department Updated Successfully!");
+            } else {
+                System.out.println("Department Not Found!");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating department: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Dept getDept(int id) {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Fetching Department by ID: " + id);
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept WHERE deptid = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Department Found: " + rs.getString("deptname"));
+                return new Dept(
+                    rs.getInt("deptid"),
+                    rs.getString("deptname"),
+                    rs.getString("deptlocation")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("No department found with ID: " + id);
+    }
+
+    @Override
+    public void delete(int id) {
+        try (Connection conn = getConnection()) {
+            System.out.println(" Deleting Department with ID: " + id);
+
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM dept WHERE deptid = ?");
+            ps.setInt(1, id);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println(" Department Deleted Successfully!");
+            } else {
+                System.out.println(" Department Not Found!");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting department: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Set<Dept> getAll() {
+        Set<Dept> depts = new HashSet<>();
+        try (Connection conn = getConnection()) {
+            System.out.println(" Fetching All Departments");
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                depts.add(new Dept(
+                    rs.getInt("deptid"),
+                    rs.getString("deptname"),
+                    rs.getString("deptlocation")
+                ));
+            }
+
+            System.out.println("Total Departments Found: " + depts.size());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return depts;
+    }
 }

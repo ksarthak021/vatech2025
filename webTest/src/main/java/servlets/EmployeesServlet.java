@@ -9,6 +9,7 @@ import dao.Employee.Gender;
 import dao.EmployeeDAO;
 import dao.EmployeeDAOImpl;
 import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,7 +24,17 @@ public class EmployeesServlet extends HttpServlet {
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		dao= (EmployeeDAO)config.getServletContext().getAttribute("emp");
+		super.init(config);
+	    ServletContext context = config.getServletContext();
+
+	    // Fetch EmployeeDAO from context
+	    this.dao = (EmployeeDAO) context.getAttribute("employeeDAO");
+
+	    if (this.dao == null) {
+	        throw new ServletException("Error: EmployeeDAO is not initialized in ServletContext!");
+	    }
+
+	    System.out.println(" EmployeeDAO initialized successfully in EmployeesServlet!");
 	}
 	
 	@Override
