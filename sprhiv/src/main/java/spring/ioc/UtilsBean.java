@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import spring.ioc.test.Point;
-
 public class UtilsBean {
 	
 	private Set<String> names;

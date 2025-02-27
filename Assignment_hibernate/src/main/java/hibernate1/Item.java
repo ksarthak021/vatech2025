@@ -1,9 +1,13 @@
 package hibernate1;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +21,17 @@ public class Item {
 	private int currentQuantity;
 	private int reorderQuantity;
 	private int maxQuantity;
+	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<LiveOrderItem> liveOrderItems;
+	
+	public void setLiveOrderItems(List<LiveOrderItem> liveOrderItems) {
+		this.liveOrderItems = liveOrderItems;
+	}
+	
+	public List<LiveOrderItem> getLiveOrderItems() {
+		return liveOrderItems;
+	}
+
 	public long getId() {
 		return id;
 	}

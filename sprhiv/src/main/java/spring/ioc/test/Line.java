@@ -1,5 +1,7 @@
 package spring.ioc.test;
 
+import spring.ioc.Point;
+
 public class Line {
 	
 	private Point start ;

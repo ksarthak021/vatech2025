@@ -1,4 +1,4 @@
-package spring.ioc.test;
+package spring.ioc;
 
 public class Point {
 	
