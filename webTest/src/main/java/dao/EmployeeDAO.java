@@ -3,6 +3,8 @@ package dao;
 
 import java.util.List;
 
+import servlets.Dept;
+
 public interface EmployeeDAO {
 	
 	void save(Employee e);
@@ -24,7 +26,10 @@ public interface EmployeeDAO {
 	List<Employee> searchByGender(String gender);
 
 	List<Employee> sortEmployees(String column, String order);
-	List<Employee> getEmployeesByDeptId(int deptId);
+	
+	//Employee getEmployeeWithDept(int id);
+
+	// Employee getEmployeeWithDept(Dept currentEmployeeId);
 
 	
 	

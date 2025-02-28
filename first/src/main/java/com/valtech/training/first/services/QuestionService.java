@@ -19,4 +19,12 @@ public interface QuestionService {
 
 	long count();
 
+	List<Question> findAllByTopic(String topic);
+
+	long countByTopic(String topic);
+	
+	long countByTopicAndQuestionTextContaining(String topic, String keyword);
+
+	long countByTopicAndQuestionTextContainingIgnoreCase(String topic, String keyword);
+
 }

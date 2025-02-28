@@ -20,6 +20,9 @@ public class Employee implements Comparable<Employee>{
     private float salary;
     private int experience;
     private Gender gender;
+    private int deptId;  
+    private String deptName;  
+    private String deptLocation;
     
     
     
@@ -35,9 +38,19 @@ public class Employee implements Comparable<Employee>{
         this.experience = experience;
         this.level = level;
         
+        
     }
-
-    
+        // Constructor With deptId (Use When deptId is Available)
+        public Employee(int id, String name, int age, Gender gender, float salary, int experience, int level, int deptId) {
+            this.id = id;
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+            this.salary = salary;
+            this.experience = experience;
+            this.level = level;
+            this.deptId = deptId;
+        }
 
     // Getters and setters
     public String getName() {
@@ -95,6 +108,20 @@ public class Employee implements Comparable<Employee>{
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+    
+    public void setDeptName(String deptName) 
+    { 
+    	this.deptName = deptName; 
+    }
+    
+    public void setDeptLocation(String deptLocation) 
+    { 
+    	this.deptLocation = deptLocation; 
+    	}
+    
+    public int getDeptId() { return deptId; }
+    public String getDeptName() { return deptName; }
+    public String getDeptLocation() { return deptLocation; }
 
     @Override
     public String toString() {

@@ -7,45 +7,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Department & Employee Details</title>
 </head>
 <body>
- Counters = ${counters}
- Current Dept = ${current}
- <h2>Department Details</h2>
- 
-<form action="depts" method="post">
-<table>
-	<tr>
-		<td>Id</td>
-		<td>${dept.id}</td>
-	</tr>
-	<tr>
-		<td>Name</td>
-		<td>${dept.name}</td>
-	</tr>
-	<tr>
-		<td>Location</td>
-		<td>${dept.location}</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<input type = "submit" name = "operation" value = "First"/>
-			<input type = "submit" name = "operation" value = "Previous"/>
-			<input type = "submit" name = "operation" value = "Next"/>
-			<input type = "submit" name = "operation" value = "Last"/>
-		</td>
-		
-	</tr>
+
+<h2>Department Details</h2>
+<c:if test="${empty dept}">
+    <p style="color: red;"></p>
+</c:if>
+<table border="1">
+    <tr><td>Department ID</td><td>${dept.id}</td></tr>
+    <tr><td>Name</td><td>${dept.name}</td></tr>
+    <tr><td>Location</td><td>${dept.location}</td></tr>
 </table>
-</form>
-<hr></hr>
 
 <hr>
-<h2>Employees in ${dept.name} Department</h2>
+
+
+<form action="depts" method="post">
+    <input type="submit" name="operation" value="First"/>
+     <input type="submit" name="operation" value="Next"/>
+    <input type="submit" name="operation" value="Previous"/>
+    <input type="submit" name="operation" value="Last"/>
+</form>
+
+<hr>
+
+<h2>Employee Details</h2>
+<c:if test="${empty employees}">
+    <p style="color: red;"> No Employees Found in This Department!</p>
+</c:if>
 <table border="1">
     <tr>
-        <th>ID</th>
+        <th>Employee ID</th>
         <th>Name</th>
         <th>Age</th>
         <th>Gender</th>
@@ -53,7 +47,7 @@
         <th>Experience</th>
         <th>Level</th>
     </tr>
-    <c:forEach items="${employees}" var="e">
+    <c:forEach var="e" items="${employees}">
         <tr>
             <td>${e.id}</td>
             <td>${e.name}</td>
@@ -65,8 +59,6 @@
         </tr>
     </c:forEach>
 </table>
-
-<hr></hr>
 
 </body>
 </html>

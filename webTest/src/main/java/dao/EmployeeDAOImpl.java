@@ -282,28 +282,51 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		
 	}
-	
-	@Override
-	public List<Employee> getEmployeesByDeptId(int deptId) {
-		 List<Employee> emps = new ArrayList<>();
-		    try (Connection conn = getConnection()) {
-		        System.out.println("Fetching Employees for Department ID: " + deptId);
-
-		        PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee WHERE deptid = ?");
-		        ps.setInt(1, deptId);
-		        ResultSet rs = ps.executeQuery();
-
-		        while (rs.next()) {
-		            emps.add(populateEmployee(rs));  
-		        }
-
-		        System.out.println(" Total Employees Found: " + emps.size());
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-
-		    return emps;
-	}
-
-
 }
+	
+//	@Override
+//	public Employee getEmployeeWithDept(int id) {
+//	    try (Connection conn = getConnection()) {
+//	        System.out.println("Fetching Employee + Department Details for Employee ID: " + id);
+//
+//	        PreparedStatement ps = conn.prepareStatement(
+//	            "SELECT e.id, e.name, e.age, e.gender, e.salary, e.experience, e.level, " +
+//	            "d.deptid, d.deptname, d.deptlocation " +
+//	            "FROM employee e " +
+//	            "JOIN dept d ON e.deptid = d.deptid " +  
+//	            "WHERE e.id = ?"
+//	        );
+//
+//	        ps.setInt(1, id);
+//	        ResultSet rs = ps.executeQuery();
+//
+//	        if (rs.next()) {
+//	            System.out.println(" Employee Found: " + rs.getString("name") + " | Dept: " + rs.getString("deptname"));
+//	            Employee emp = new Employee(
+//	                rs.getInt("id"),
+//	                rs.getString("name"),
+//	                rs.getInt("age"),
+//	                Employee.Gender.valueOf(rs.getString("gender")),
+//	                rs.getFloat("salary"),
+//	                rs.getInt("experience"),
+//	                rs.getInt("level"),
+//	                rs.getInt("deptid")  
+//	            );
+//
+//	            
+//	            emp.setDeptName(rs.getString("deptname"));
+//	            emp.setDeptLocation(rs.getString("deptlocation"));
+//	            return emp;
+//	        } else {
+//	            System.out.println(" No Employee Found with ID: " + id);
+//	        }
+//	    } catch (SQLException e) {
+//	        e.printStackTrace();
+//	    }
+//
+//	    throw new RuntimeException("No Employee found with ID: " + id);
+//	}
+
+
+
+

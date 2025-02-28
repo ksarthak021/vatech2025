@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.valtech.training.first.entities.Question;
 import com.valtech.training.first.repos.QuestionRepo;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class QuestionServiceImpl implements QuestionService {
 	
 	@Autowired
@@ -44,6 +47,29 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public long count() {
 		return questionRepo.count();
+	}
+
+	@Override
+	public List<Question> findAllByTopic(String topic) {
+		
+		return questionRepo.findAllByTopic(topic);
+	}
+
+	@Override
+	public long countByTopic(String topic) {	
+		return questionRepo.countByTopic(topic);
+	}
+
+	@Override
+	public long countByTopicAndQuestionTextContaining(String topic, String keyword) {
+		
+		return questionRepo.countByTopicAndQuestionTextContaining(topic,keyword);
+	}
+
+	@Override
+	public long countByTopicAndQuestionTextContainingIgnoreCase(String topic, String keyword) {
+		
+		return questionRepo.countByTopicAndQuestionTextContainingIgnoreCase(topic,keyword);
 	}
 	
 
