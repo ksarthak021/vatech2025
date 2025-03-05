@@ -33,7 +33,7 @@ public class OwnerVO {
 	
 	
 	public static OwnerVO from(Owner owner) {
-		List<Long> watches=owner.getWatches().stream().map(o->o.getId()).collect(Collectors.toList());
+		List<Long> watches=owner.getWatches() == null ? List.of() : owner.getWatches().stream().map(o->o.getId()).collect(Collectors.toList());
 		return new OwnerVO(owner.getId(),owner.getName(),owner.getMobile(),owner.getEmail(),watches);
 	}
 	
@@ -48,6 +48,13 @@ public class OwnerVO {
 	}
 	
 	
+	
+	@Override
+	public String toString() {
+		return "OwnerVO [id=" + id + ", name=" + name + ", mobile=" + mobile + ", email=" + email + ", watches="
+				+ watches + "]";
+	}
+
 	public long getId() {
 		return id;
 	}

@@ -8,29 +8,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
  
 import com.valtech.training.restapis.services.OwnerService;
 import com.valtech.training.restapis.vos.OwnerVO;
 @RestController
+@RequestMapping("/api/v1/owners")
 public class OwnerController {
  
 	@Autowired
 	private OwnerService ownerService;
 	
-	@PutMapping("/owners/{id}/watches")
+	@PutMapping("/{id}/watches")
 	public OwnerVO updateWatches(@PathVariable("id") long id,@RequestBody List<Long>watches) {
 		return ownerService.addWatchesToOwner(id,watches);
 		
 	}
 	
-	@GetMapping("/owners/{id}")
+	@GetMapping("/{id}")
 	public OwnerVO getOwner(@PathVariable("id") long id) {
 		return ownerService.getOwner(id);
 	}
 	
-	@GetMapping("/owners/")
+	@GetMapping("/")
 	public List<OwnerVO> getOwners(@RequestParam(name="name",required = false) String name) {
 		if(name == null)
 			return ownerService.getOwners();
@@ -38,12 +40,12 @@ public class OwnerController {
 			return ownerService.getOwnersByName(name);
 	}
 	
-	@PostMapping("/owners/")
+	@PostMapping("/")
 	public OwnerVO createOwner(@RequestBody OwnerVO owner) {
 		return ownerService.createOwner(owner);
 	}
  
-	@PutMapping("/owners/{id}")
+	@PutMapping("/{id}")
 	public OwnerVO updateOwner(@PathVariable("id") long id, @RequestBody OwnerVO owner) {
 		return ownerService.updateOwner(id, owner);
 	}
