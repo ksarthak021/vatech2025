@@ -29,7 +29,7 @@ public class DeptDAOImpl implements DeptDAO {
     @Override
     public Dept first() {
         try (Connection conn = getConnection()) {
-            System.out.println("🔍 Executing SQL: SELECT * FROM dept ORDER BY deptid ASC LIMIT 1");
+            System.out.println(" Executing SQL: SELECT * FROM dept ORDER BY deptid ASC LIMIT 1");
  
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM dept ORDER BY deptid ASC LIMIT 1");
             ResultSet rs = ps.executeQuery();

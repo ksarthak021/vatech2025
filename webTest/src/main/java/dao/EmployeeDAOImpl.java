@@ -46,25 +46,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public void save(Employee e) {
-		    try (Connection conn = getConnection()) {
-		        PreparedStatement ps = conn.prepareStatement(
-		            "INSERT INTO employee (id, name, age, gender, salary, experience, level, deptid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-		        );
-		        ps.setInt(1, (int)e.getId());
-		        ps.setString(2, e.getName());
-		        ps.setInt(3, e.getAge());
-		        ps.setString(4, e.getGender().name());
-		        ps.setFloat(5, e.getSalary());
-		        ps.setInt(6, e.getExperience());
-		        ps.setInt(7, e.getLevel());
-		        
-
-		        int rowsAffected = ps.executeUpdate();
-		       
-		    } catch (SQLException ex) {
-		        throw new RuntimeException("Error saving employee: " + ex.getMessage(), ex);
-		    }
+		try (Connection conn = getConnection()){
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO EMPLOYEE (NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,ID) VALUES(?,?,?,?,?,?,?)");
+			setValuesToPreparedStatement(e, ps);
+			int rowsAffected=ps.executeUpdate();
+			System.out.println("ROW Insert = "+rowsAffected);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
 		}
+		
+	}
 	private void setValuesToPreparedStatement(Employee e, PreparedStatement ps) throws SQLException {
 		ps.setString(1, e.getName());
 		ps.setInt(2, e.getAge());

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:beans xmlns:p="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans spring-beans-3.2.xsd ">
+
+<p:bean class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	<p:property name="annotatedClasses">
+		<p:list>
+			<p:value>spring.tx.Employee</p:value>
+		</p:list>
+	</p:property>
+</p:bean>
+
+<p:bean id="txAdvice" class="spring.ioc.revision.TxAdvice"></p:bean>
+
+<p:bean id="employeeDAO" class="org.spring.framework.aop.framework.ProxyFactoryBean">
+<p:property name="target">
+		<p:list>
+			<p:value>spring.tx.Employee</p:value>
+		</p:list>
+	</p:property>
+</p:bean>
+
+
+<p:import resource="classpath:jdbc.xml"/>
+
+
+</p:beans>
