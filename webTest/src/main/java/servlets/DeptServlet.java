@@ -40,31 +40,7 @@ public class DeptServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//	    String operation = req.getParameter("operation");
-//	    HttpSession session = req.getSession();
-//	    
-//	    Dept currentEmployeeId = (Dept) session.getAttribute("current");
-//	    if (currentEmployeeId == null) {
-//	        currentEmployeeId = deptDAO.first();
-//	    }
-//
-//	    if ("First".equals(operation)) {
-//	        currentEmployeeId = deptDAO.first();
-//	    } else if ("Last".equals(operation)) {
-//	        currentEmployeeId = deptDAO.last();  
-//	    } else if ("Previous".equals(operation)) {
-//	        currentEmployeeId= deptDAO.previous(currentEmployeeId.getId());
-//	    } else if ("Next".equals(operation)) {
-//	        currentEmployeeId=deptDAO.next(currentEmployeeId.getId());
-//	    }
-//
-//	    
-//
-//	    session.setAttribute("currentEmployeeId", deptDAO.getEmployeesByDeptId(currentEmployeeId.getId()));
-//	    req.setAttribute("employee", deptDAO.getEmployeesByDeptId(currentEmployeeId.getId()));
-//
-//	    req.getRequestDispatcher("depts.jsp").forward(req, resp);
-		
+
 		String operation = req.getParameter("operation");
 	    HttpSession session = req.getSession();
 	    
@@ -100,25 +76,7 @@ public class DeptServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//	    HttpSession session = req.getSession();
-//	    String operation = req.getParameter("operation");
-//	    Dept currentDept= (Dept) session.getAttribute("currentDept");
-//	    // Fetch current department
-//	    //Dept currentDept = deptDAO.first(); // Fetch the first department by default
-//	    if (currentDept!= null) {
-//	        session.setAttribute("currentDept",currentDept);
-//	    }
-//	    session.setAttribute("employee", deptDAO.getEmployeesByDeptId(currentDept.getId())); // Store in session
-//	   // session.setAttribute("currentDept", currentDept); // Store in session
-//	    req.setAttribute("dept", currentDept); 
-//	    req.setAttribute("depts", deptDAO.getAll()); 
-//
-//
-//	    // Fetch current employee in that department
-//	   // Employee currentEmployee = dao.getEmployeeWithDept(currentDept.getId()); // Fetch employee for current department
-//	   //req.setAttribute("employee", deptDAO.getEmployeesByDeptId(currentDept.getId()));  
-//
-//	    req.getRequestDispatcher("depts.jsp").forward(req, resp);
+
 	
 		HttpSession session = req.getSession();
 	    

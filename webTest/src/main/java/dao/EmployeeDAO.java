@@ -27,10 +27,7 @@ public interface EmployeeDAO {
 
 	List<Employee> sortEmployees(String column, String order);
 	
-	//Employee getEmployeeWithDept(int id);
-
-	// Employee getEmployeeWithDept(Dept currentEmployeeId);
-
+	
 	
 	
 	
